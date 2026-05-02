@@ -339,11 +339,51 @@ export class SelectTool {
     getObjectAtPosition(worldX, worldY) {
         // Check in reverse order (top to bottom)
         for (let i = this.objects.length - 1; i >= 0; i--) {
-            if (this.objects[i].containsPoint(worldX, worldY)) {
-                return this.objects[i];
+            const obj = this.objects[i];
+            
+            // Handle line objects
+            if (obj.type === 'line') {
+                if (this.isPointNearLine(worldX, worldY, obj)) {
+                    return obj;
+                }
+            }
+            // Handle shape objects with containsPoint method
+            else if (obj.containsPoint && obj.containsPoint(worldX, worldY)) {
+                return obj;
             }
         }
         return null;
+    }
+    
+    /**
+     * Check if point is near a line
+     */
+    isPointNearLine(x, y, line) {
+        const threshold = 5; // pixels in world coordinates
+        
+        // Calculate distance from point to line segment
+        const dx = line.endX - line.startX;
+        const dy = line.endY - line.startY;
+        const lengthSquared = dx * dx + dy * dy;
+        
+        if (lengthSquared === 0) {
+            // Line is a point
+            const distX = x - line.startX;
+            const distY = y - line.startY;
+            return Math.sqrt(distX * distX + distY * distY) <= threshold;
+        }
+        
+        // Calculate projection of point onto line
+        const t = Math.max(0, Math.min(1, ((x - line.startX) * dx + (y - line.startY) * dy) / lengthSquared));
+        const projX = line.startX + t * dx;
+        const projY = line.startY + t * dy;
+        
+        // Calculate distance from point to projection
+        const distX = x - projX;
+        const distY = y - projY;
+        const distance = Math.sqrt(distX * distX + distY * distY);
+        
+        return distance <= threshold;
     }
 
     /**

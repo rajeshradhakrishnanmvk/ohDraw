@@ -30,21 +30,21 @@ export class Door extends Shape {
         ctx.save();
         
         const screenPos = viewport.worldToScreen(this.x, this.y);
-        const screenWidth = this.width * viewport.zoom;
-        const screenHeight = this.height * viewport.zoom;
+        const screenWidth = this.width * viewport.scale;
+        const screenHeight = this.height * viewport.scale;
         
         // Draw frame
-        this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw door panel(s)
-        this.renderPanel(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderPanel(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw handle
-        this.renderHandle(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderHandle(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw opening arc (for swing doors)
         if (this.properties.doorType === 'single' || this.properties.doorType === 'double') {
-            this.renderOpeningArc(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderOpeningArc(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         
         // Draw threshold
@@ -66,8 +66,8 @@ export class Door extends Shape {
     /**
      * Render door frame
      */
-    renderFrame(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderFrame(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         
         ctx.fillStyle = this.properties.frameColor;
         ctx.strokeStyle = this.selected ? '#0066ff' : '#000000';
@@ -81,21 +81,21 @@ export class Door extends Shape {
     /**
      * Render door panel
      */
-    renderPanel(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderPanel(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         
         switch (this.properties.doorType) {
             case 'single':
-                this.renderSinglePanel(ctx, x, y, width, height, frameWidth);
+                this.renderSinglePanel(ctx, x, y, width, height, frameWidth, viewport);
                 break;
             case 'double':
-                this.renderDoublePanel(ctx, x, y, width, height, frameWidth);
+                this.renderDoublePanel(ctx, x, y, width, height, frameWidth, viewport);
                 break;
             case 'sliding':
-                this.renderSlidingPanel(ctx, x, y, width, height, frameWidth);
+                this.renderSlidingPanel(ctx, x, y, width, height, frameWidth, viewport);
                 break;
             case 'folding':
-                this.renderFoldingPanel(ctx, x, y, width, height, frameWidth);
+                this.renderFoldingPanel(ctx, x, y, width, height, frameWidth, viewport);
                 break;
         }
     }
@@ -103,7 +103,7 @@ export class Door extends Shape {
     /**
      * Render single door panel
      */
-    renderSinglePanel(ctx, x, y, width, height, frameWidth) {
+    renderSinglePanel(ctx, x, y, width, height, frameWidth, viewport) {
         const panelX = x + frameWidth;
         const panelY = y + frameWidth;
         const panelWidth = width - frameWidth * 2;
@@ -134,7 +134,7 @@ export class Door extends Shape {
     /**
      * Render double door panels
      */
-    renderDoublePanel(ctx, x, y, width, height, frameWidth) {
+    renderDoublePanel(ctx, x, y, width, height, frameWidth, viewport) {
         const panelX = x + frameWidth;
         const panelY = y + frameWidth;
         const panelWidth = (width - frameWidth * 2) / 2;
@@ -163,7 +163,7 @@ export class Door extends Shape {
     /**
      * Render sliding door panels
      */
-    renderSlidingPanel(ctx, x, y, width, height, frameWidth) {
+    renderSlidingPanel(ctx, x, y, width, height, frameWidth, viewport) {
         const panelX = x + frameWidth;
         const panelY = y + frameWidth;
         const panelWidth = (width - frameWidth * 2) / 2;
@@ -195,7 +195,7 @@ export class Door extends Shape {
     /**
      * Render folding door panels
      */
-    renderFoldingPanel(ctx, x, y, width, height, frameWidth) {
+    renderFoldingPanel(ctx, x, y, width, height, frameWidth, viewport) {
         const panelX = x + frameWidth;
         const panelY = y + frameWidth;
         const panelWidth = (width - frameWidth * 2) / 3;
@@ -216,8 +216,8 @@ export class Door extends Shape {
     /**
      * Render door handle
      */
-    renderHandle(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderHandle(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         const handleSize = 8;
         
         let handleX, handleY;
@@ -242,33 +242,47 @@ export class Door extends Shape {
     /**
      * Render opening arc for swing doors
      */
-    renderOpeningArc(ctx, x, y, width, height) {
+    renderOpeningArc(ctx, x, y, width, height, viewport) {
         ctx.strokeStyle = '#999999';
         ctx.lineWidth = 1;
         ctx.setLineDash([5, 5]);
         
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         const radius = width - frameWidth * 2;
+        
+        // Don't draw arc if radius is too small or negative
+        if (radius <= 0) {
+            ctx.setLineDash([]);
+            return;
+        }
         
         if (this.properties.doorType === 'single') {
             const centerX = this.properties.handleSide === 'right' ? x + frameWidth : x + width - frameWidth;
             const centerY = y + height - frameWidth;
             const startAngle = this.properties.handleSide === 'right' ? Math.PI : 0;
-            const endAngle = startAngle + (this.properties.openingAngle * Math.PI / 180) * 
+            const endAngle = startAngle + (this.properties.openingAngle * Math.PI / 180) *
                            (this.properties.openingDirection === 'inward' ? -1 : 1);
             
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.stroke();
         } else if (this.properties.doorType === 'double') {
+            const halfRadius = radius / 2;
+            
+            // Don't draw if half radius is too small
+            if (halfRadius <= 0) {
+                ctx.setLineDash([]);
+                return;
+            }
+            
             // Left door arc
             ctx.beginPath();
-            ctx.arc(x + frameWidth, y + height - frameWidth, radius / 2, Math.PI, Math.PI - Math.PI / 2);
+            ctx.arc(x + frameWidth, y + height - frameWidth, halfRadius, Math.PI, Math.PI - Math.PI / 2);
             ctx.stroke();
             
             // Right door arc
             ctx.beginPath();
-            ctx.arc(x + width - frameWidth, y + height - frameWidth, radius / 2, 0, Math.PI / 2);
+            ctx.arc(x + width - frameWidth, y + height - frameWidth, halfRadius, 0, Math.PI / 2);
             ctx.stroke();
         }
         

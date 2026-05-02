@@ -29,28 +29,28 @@ export class Glass extends Shape {
         ctx.save();
         
         const screenPos = viewport.worldToScreen(this.x, this.y);
-        const screenWidth = this.width * viewport.zoom;
-        const screenHeight = this.height * viewport.zoom;
+        const screenWidth = this.width * viewport.scale;
+        const screenHeight = this.height * viewport.scale;
         
         // Draw frame (if applicable)
         if (this.properties.frameType !== 'frameless') {
-            this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         
         // Draw glass panel
-        this.renderGlassPanel(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderGlassPanel(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw edge details
-        this.renderEdge(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderEdge(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw pattern/texture
         if (this.properties.pattern !== 'none') {
-            this.renderPattern(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderPattern(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         
         // Draw safety indicators
         if (this.properties.safety) {
-            this.renderSafetyIndicators(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderSafetyIndicators(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         
         // Draw label
@@ -67,7 +67,7 @@ export class Glass extends Shape {
     /**
      * Render frame (for framed or semi-framed glass)
      */
-    renderFrame(ctx, x, y, width, height) {
+    renderFrame(ctx, x, y, width, height, viewport) {
         const frameWidth = this.properties.frameType === 'framed' ? 20 : 10;
         
         ctx.strokeStyle = this.properties.frameColor;
@@ -95,7 +95,7 @@ export class Glass extends Shape {
     /**
      * Render glass panel
      */
-    renderGlassPanel(ctx, x, y, width, height) {
+    renderGlassPanel(ctx, x, y, width, height, viewport) {
         const inset = this.properties.frameType === 'frameless' ? 0 : 
                      this.properties.frameType === 'framed' ? 10 : 5;
         
@@ -144,8 +144,21 @@ export class Glass extends Shape {
      * Render glass reflection effect
      */
     renderReflection(ctx, x, y, width, height) {
+        // Skip if dimensions are too small or invalid
+        if (width <= 0 || height <= 0 || !isFinite(width) || !isFinite(height)) {
+            return;
+        }
+        
         // Diagonal gradient for reflection
-        const gradient = ctx.createLinearGradient(x, y, x + width * 0.3, y + height * 0.3);
+        const gradientEndX = x + width * 0.3;
+        const gradientEndY = y + height * 0.3;
+        
+        // Ensure gradient coordinates are valid
+        if (!isFinite(gradientEndX) || !isFinite(gradientEndY)) {
+            return;
+        }
+        
+        const gradient = ctx.createLinearGradient(x, y, gradientEndX, gradientEndY);
         gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
         gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
         
@@ -172,7 +185,7 @@ export class Glass extends Shape {
     /**
      * Render edge details
      */
-    renderEdge(ctx, x, y, width, height) {
+    renderEdge(ctx, x, y, width, height, viewport) {
         if (this.properties.edgeType === 'beveled') {
             // Draw beveled edge effect
             ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
@@ -189,7 +202,7 @@ export class Glass extends Shape {
     /**
      * Render pattern/texture
      */
-    renderPattern(ctx, x, y, width, height) {
+    renderPattern(ctx, x, y, width, height, viewport) {
         ctx.save();
         ctx.globalAlpha = 0.3;
         
@@ -271,7 +284,7 @@ export class Glass extends Shape {
     /**
      * Render safety indicators (corner marks)
      */
-    renderSafetyIndicators(ctx, x, y, width, height) {
+    renderSafetyIndicators(ctx, x, y, width, height, viewport) {
         ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
         const markSize = 15;
         

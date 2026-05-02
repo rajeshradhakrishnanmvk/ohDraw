@@ -201,6 +201,7 @@ class CADApp {
             if (e.key === 's' || e.key === 'S') {
                 if (!e.ctrlKey) { // Don't interfere with Ctrl+S
                     this.settings.snapToGrid = !this.settings.snapToGrid;
+                    this.grid.snapEnabled = this.settings.snapToGrid;
                     const snapToggle = document.getElementById('snap-toggle');
                     if (snapToggle) snapToggle.checked = this.settings.snapToGrid;
                 }
@@ -233,6 +234,50 @@ class CADApp {
                 this.viewport.zoomOut(center.x, center.y);
                 this.canvasRenderer.render();
                 this.updateStatusBar();
+            }
+            
+            // Phase 2: Delete selected (Delete key)
+            if (e.key === 'Delete' && this.selectTool) {
+                this.selectTool.deleteSelected();
+                if (this.propertyPanel) {
+                    this.propertyPanel.update([]);
+                }
+                this.canvasRenderer.render();
+            }
+            
+            // Phase 2: Duplicate selected (Ctrl+D)
+            if ((e.key === 'd' || e.key === 'D') && e.ctrlKey) {
+                e.preventDefault();
+                if (this.selectTool) {
+                    this.selectTool.duplicateSelected();
+                    if (this.propertyPanel) {
+                        this.propertyPanel.update(this.selectTool.getSelectedObjects());
+                    }
+                    this.canvasRenderer.render();
+                }
+            }
+            
+            // Phase 2: Select all (Ctrl+A)
+            if ((e.key === 'a' || e.key === 'A') && e.ctrlKey) {
+                e.preventDefault();
+                if (this.selectTool) {
+                    this.selectTool.selectAll();
+                    if (this.propertyPanel) {
+                        this.propertyPanel.update(this.selectTool.getSelectedObjects());
+                    }
+                    this.canvasRenderer.render();
+                }
+            }
+            
+            // Phase 2: Deselect all (Escape)
+            if (e.key === 'Escape') {
+                if (this.selectTool) {
+                    this.selectTool.clearSelection();
+                    if (this.propertyPanel) {
+                        this.propertyPanel.update([]);
+                    }
+                    this.canvasRenderer.render();
+                }
             }
         });
     }
@@ -429,7 +474,13 @@ class CADApp {
     renderObjects(ctx) {
         // Render all objects
         this.objects.forEach(obj => {
-            obj.render(ctx, this.viewport);
+            // Handle line objects (plain objects without render method)
+            if (obj.type === 'line') {
+                this.renderLine(ctx, obj);
+            } else if (obj.render) {
+                // Handle shape objects (Window, Door, Glass with render method)
+                obj.render(ctx, this.viewport);
+            }
         });
         
         // Render tool preview
@@ -441,6 +492,36 @@ class CADApp {
         if (this.selectTool && this.selectTool.renderSelectionBox) {
             this.selectTool.renderSelectionBox(ctx);
         }
+    }
+
+    /**
+     * Render a line object
+     */
+    renderLine(ctx, line) {
+        ctx.save();
+        
+        const start = this.viewport.worldToScreen(line.startX, line.startY);
+        const end = this.viewport.worldToScreen(line.endX, line.endY);
+        
+        ctx.strokeStyle = line.selected ? '#0066ff' : (line.color || '#FF0000');
+        ctx.lineWidth = line.selected ? (line.lineWidth || 2) + 1 : (line.lineWidth || 2);
+        ctx.beginPath();
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+        
+        // Draw endpoints
+        if (line.selected) {
+            ctx.fillStyle = '#0066ff';
+            ctx.beginPath();
+            ctx.arc(start.x, start.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(end.x, end.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        ctx.restore();
     }
 
     /**
@@ -459,6 +540,7 @@ class CADApp {
             // Property was updated, just re-render
             this.canvasRenderer.render();
         }
+    }
 }
 
 // Create and export global app instance
@@ -466,4 +548,3 @@ const app = new CADApp();
 export default app;
 
 // Made with Bob - Phase 2 Complete
-    }

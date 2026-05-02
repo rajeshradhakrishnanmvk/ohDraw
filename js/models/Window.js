@@ -29,14 +29,14 @@ export class Window extends Shape {
         ctx.save();
         
         const screenPos = viewport.worldToScreen(this.x, this.y);
-        const screenWidth = this.width * viewport.zoom;
-        const screenHeight = this.height * viewport.zoom;
+        const screenWidth = this.width * viewport.scale;
+        const screenHeight = this.height * viewport.scale;
         
         // Draw frame
-        this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderFrame(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw glass
-        this.renderGlass(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+        this.renderGlass(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         
         // Draw opening direction indicator
         if (this.properties.openingDirection !== 'none') {
@@ -45,10 +45,10 @@ export class Window extends Shape {
         
         // Draw mullions and transoms if enabled
         if (this.properties.mullions) {
-            this.renderMullions(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderMullions(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         if (this.properties.transoms) {
-            this.renderTransoms(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight);
+            this.renderTransoms(ctx, screenPos.x, screenPos.y, screenWidth, screenHeight, viewport);
         }
         
         // Draw label
@@ -65,8 +65,8 @@ export class Window extends Shape {
     /**
      * Render window frame
      */
-    renderFrame(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderFrame(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         
         ctx.fillStyle = this.properties.frameColor;
         ctx.strokeStyle = this.selected ? '#0066ff' : '#000000';
@@ -90,8 +90,8 @@ export class Window extends Shape {
     /**
      * Render glass area
      */
-    renderGlass(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderGlass(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         const glassX = x + frameWidth;
         const glassY = y + frameWidth;
         const glassWidth = width - frameWidth * 2;
@@ -173,8 +173,8 @@ export class Window extends Shape {
     /**
      * Render mullions (vertical dividers)
      */
-    renderMullions(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderMullions(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         const glassX = x + frameWidth;
         const glassY = y + frameWidth;
         const glassWidth = width - frameWidth * 2;
@@ -193,8 +193,8 @@ export class Window extends Shape {
     /**
      * Render transoms (horizontal dividers)
      */
-    renderTransoms(ctx, x, y, width, height) {
-        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.zoom / 10);
+    renderTransoms(ctx, x, y, width, height, viewport) {
+        const frameWidth = Math.max(2, this.properties.frameWidth * viewport.scale / 10);
         const glassX = x + frameWidth;
         const glassY = y + frameWidth;
         const glassWidth = width - frameWidth * 2;

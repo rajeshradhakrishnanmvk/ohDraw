@@ -371,4 +371,153 @@
     }
 }
 
+
+/* Phase 2: Additional Styles */
+
+/* Property Section */
+.property-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.property-section:last-child {
+    border-bottom: none;
+}
+
+.property-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.property-section h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.property-id {
+    font-size: 11px;
+    color: #95a5a6;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 12px;
+}
+
+/* Property Empty State */
+.property-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #95a5a6;
+}
+
+.property-empty p {
+    margin: 8px 0;
+}
+
+.property-empty .hint {
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.input-group .unit {
+    font-size: 12px;
+    color: #7f8c8d;
+    min-width: 30px;
+}
+
+/* Property Row Inputs */
+.property-row input[type="number"],
+.property-row input[type="text"],
+.property-row input[type="color"],
+.property-row select {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: border-color 0.2s;
+}
+
+.property-row input:focus,
+.property-row select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.property-row input[type="color"] {
+    width: 50px;
+    height: 32px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.property-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.property-row label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Action Buttons */
+.btn-delete,
+.btn-duplicate {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.btn-duplicate {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-duplicate:hover {
+    background-color: #2980b9;
+}
+
+/* Made with Bob - Phase 2 */
 /* Made with Bob */

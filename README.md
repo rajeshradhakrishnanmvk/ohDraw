@@ -1,8 +1,8 @@
-# CAD Drawing Engine - Phase 1 Complete
+# CAD Drawing Engine - Phase 2 Complete
 
 A lightweight, browser-based CAD drawing engine for designing Windows, Doors, and Glass elements for interior spaces. Built with vanilla JavaScript, HTML5 Canvas, and CSS - no third-party dependencies.
 
-## 🎉 Phase 1: Core Foundation - COMPLETE
+## 🎉 Phase 1: Core Foundation - COMPLETE ✅
 
 Phase 1 establishes the foundational infrastructure including:
 - ✅ Project structure with organized directories
@@ -11,6 +11,20 @@ Phase 1 establishes the foundational infrastructure including:
 - ✅ Grid system with snap-to-grid functionality
 - ✅ Complete UI layout with toolbar, panels, and status bar
 - ✅ Keyboard shortcuts and mouse controls
+
+## 🚀 Phase 2: Drawing & Selection - COMPLETE ✅
+
+Phase 2 adds interactive drawing and object manipulation:
+- ✅ Object models (Window, Door, Glass) with rich properties
+- ✅ Drawing tools for creating objects
+- ✅ Selection system with click and drag selection
+- ✅ Multi-selection support (Shift+click)
+- ✅ Object manipulation (move, resize, rotate)
+- ✅ Selection handles and bounding boxes
+- ✅ Property panel with dynamic editing
+- ✅ Real-time property updates
+- ✅ Tool preview during drawing
+- ✅ Line measurement tool
 
 ## 🚀 Getting Started
 
@@ -51,17 +65,27 @@ file:///path/to/ohDraw/index.html
 ## 🎮 Controls & Features
 
 ### Mouse Controls
-- **Left Click + Drag**: Pan the viewport (when Shift is held)
+- **Left Click**: Select object / Start drawing
+- **Left Click + Drag**: Draw object / Move selected object / Pan (with Shift)
+- **Shift + Left Click**: Add to selection (multi-select)
 - **Middle Mouse + Drag**: Pan the viewport
 - **Mouse Wheel**: Zoom in/out (centered on cursor)
-- **Right Click**: Context menu (currently disabled)
+- **Drag Selection Box**: Select multiple objects
+- **Resize Handles**: Click and drag to resize selected object
 
 ### Keyboard Shortcuts
+**View Controls:**
 - **G**: Toggle grid visibility
 - **S**: Toggle snap-to-grid
 - **R**: Reset view to default
 - **+/=**: Zoom in
 - **-**: Zoom out
+
+**Object Operations:**
+- **Delete**: Delete selected objects
+- **Ctrl+D**: Duplicate selected objects
+- **Ctrl+A**: Select all objects
+- **Escape**: Deselect all objects
 
 ### UI Controls
 - **Grid Toggle**: Show/hide the grid overlay
@@ -157,12 +181,22 @@ ohDraw/
 - Origin marker for debugging
 - Responsive UI layout
 
-### Coming in Phase 2 🚧
-- Drawing tools (rectangle, line, circle)
-- Object models (Window, Door, Glass)
-- Selection system
-- Basic property editing
-- Object manipulation (move, resize, rotate)
+### Phase 2 Features ✅
+- **Drawing Tools**: Create Windows, Doors, Glass panels, and measurement lines
+- **Object Models**: Rich object properties with visual rendering
+- **Selection System**: Click, drag-select, and multi-select with Shift
+- **Property Editing**: Dynamic property panel with real-time updates
+- **Object Manipulation**: Move, resize, and rotate objects
+- **Selection Handles**: Visual handles for precise resizing
+- **Tool Preview**: Live preview while drawing
+- **Snap to Grid**: Precise object placement
+
+### Coming in Phase 3 🚧
+- Undo/redo system
+- Layer management
+- Copy/paste functionality
+- Object grouping
+- Alignment tools
 
 ## 🐛 Known Issues
 
@@ -205,14 +239,42 @@ For detailed architecture and design decisions, see:
 - RequestAnimationFrame for rendering loop
 - High DPI canvas scaling
 
-## 🎯 Next Steps
+## 🎯 What's New in Phase 2
 
-Phase 2 will add:
-1. Drawing tools for creating shapes
-2. Object model for Windows, Doors, and Glass
-3. Selection and manipulation system
-4. Property editing panel
-5. Basic object operations
+### New Files Created
+- `js/models/Shape.js` - Base shape class with common functionality
+- `js/models/Window.js` - Window object with frame and glass properties
+- `js/models/Door.js` - Door object with multiple door types
+- `js/models/Glass.js` - Glass panel object with various glass types
+- `js/tools/DrawTool.js` - Drawing tool for creating objects
+- `js/tools/SelectTool.js` - Selection and manipulation tool
+- `js/ui/PropertyPanel.js` - Dynamic property editing panel
+
+### Enhanced Files
+- `js/app.js` - Integrated tools, objects, and property panel
+- `js/core/Canvas.js` - Added custom render callback support
+- `css/properties.css` - Added Phase 2 specific styles
+
+### How to Use Phase 2 Features
+
+1. **Select a Tool**: Click on Window, Door, Glass, or Line tool in the toolbar
+2. **Draw an Object**: Click and drag on the canvas to create an object
+3. **Select Objects**: Click on an object to select it, or drag a selection box
+4. **Multi-Select**: Hold Shift and click to add objects to selection
+5. **Move Objects**: Click and drag selected objects to move them
+6. **Resize Objects**: Drag the selection handles to resize
+7. **Edit Properties**: Use the property panel on the right to edit object properties
+8. **Delete Objects**: Select objects and press Delete key
+9. **Duplicate Objects**: Select objects and press Ctrl+D
+
+## 🎯 Next Steps - Phase 3
+
+Phase 3 will add:
+1. Undo/redo system with command pattern
+2. Layer management with visibility and locking
+3. Copy/paste functionality
+4. Object grouping and alignment tools
+5. Keyboard shortcuts for common operations
 
 ## 📄 License
 
@@ -224,4 +286,4 @@ Built with ❤️ using vanilla JavaScript, HTML5 Canvas, and CSS.
 
 ---
 
-**Status**: Phase 1 Complete ✅ | **Version**: 1.0.0 | **Last Updated**: May 2026
+**Status**: Phase 2 Complete ✅ | **Version**: 2.0.0 | **Last Updated**: May 2026

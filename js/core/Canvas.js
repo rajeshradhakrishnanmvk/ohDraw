@@ -14,6 +14,9 @@ export class Canvas {
         this.isRendering = false;
         this.animationFrameId = null;
         
+        // Phase 2: Custom render callback
+        this.customRenderCallback = null;
+        
         // Mouse state
         this.mouseX = 0;
         this.mouseY = 0;
@@ -39,20 +42,28 @@ export class Canvas {
         const dpr = window.devicePixelRatio || 1;
         const rect = this.canvas.getBoundingClientRect();
         
+        // Ensure minimum canvas size to prevent distortion
+        const minWidth = 800;
+        const minHeight = 600;
+        const width = Math.max(rect.width, minWidth);
+        const height = Math.max(rect.height, minHeight);
+        
         // Set actual size in memory (scaled for DPI)
-        this.canvas.width = rect.width * dpr;
-        this.canvas.height = rect.height * dpr;
+        this.canvas.width = width * dpr;
+        this.canvas.height = height * dpr;
         
         // Set display size (CSS pixels)
-        this.canvas.style.width = rect.width + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        this.canvas.style.width = width + 'px';
+        this.canvas.style.height = height + 'px';
         
         // Scale context to match DPI
         this.ctx.scale(dpr, dpr);
         
         // Store logical dimensions
-        this.logicalWidth = rect.width;
-        this.logicalHeight = rect.height;
+        this.logicalWidth = width;
+        this.logicalHeight = height;
+        
+        console.log(`Canvas setup: ${width}x${height} (DPR: ${dpr}, Buffer: ${this.canvas.width}x${this.canvas.height})`);
     }
 
     /**
@@ -205,11 +216,20 @@ export class Canvas {
         // Draw grid
         this.grid.draw(this.ctx, this.viewport);
         
-        // Future: Draw objects here
-        // this.drawObjects();
+        // Phase 2: Call custom render callback for objects
+        if (this.customRenderCallback) {
+            this.customRenderCallback(this.ctx);
+        }
         
         // Draw crosshair at origin (for debugging)
         this.drawOriginMarker();
+    }
+
+    /**
+     * Set custom render callback (Phase 2)
+     */
+    setCustomRender(callback) {
+        this.customRenderCallback = callback;
     }
 
     /**
