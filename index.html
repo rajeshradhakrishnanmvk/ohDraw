@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CAD Drawing Engine for Windows, Doors, and Glass">
+    <title>CAD Drawing Engine</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/toolbar.css">
+    <link rel="stylesheet" href="css/properties.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Top Menu Bar -->
+        <header class="menu-bar">
+            <div class="menu-section">
+                <button class="menu-btn">File</button>
+                <button class="menu-btn">Edit</button>
+                <button class="menu-btn">View</button>
+                <button class="menu-btn">Tools</button>
+                <button class="menu-btn">Help</button>
+            </div>
+            <div class="menu-section">
+                <button class="menu-btn primary">Save</button>
+                <button class="menu-btn">Load</button>
+            </div>
+        </header>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-section">
+                <button class="tool-btn active" title="Select Tool">
+                    <span class="tool-icon">⬚</span>
+                    <span class="tool-label">Select</span>
+                </button>
+                <button class="tool-btn" title="Window Tool">
+                    <span class="tool-icon">⬜</span>
+                    <span class="tool-label">Window</span>
+                </button>
+                <button class="tool-btn" title="Door Tool">
+                    <span class="tool-icon">🚪</span>
+                    <span class="tool-label">Door</span>
+                </button>
+                <button class="tool-btn" title="Glass Tool">
+                    <span class="tool-icon">◻</span>
+                    <span class="tool-label">Glass</span>
+                </button>
+                <button class="tool-btn" title="Line Tool">
+                    <span class="tool-icon">╱</span>
+                    <span class="tool-label">Line</span>
+                </button>
+            </div>
+            
+            <div class="toolbar-section">
+                <div class="toolbar-control">
+                    <label for="grid-toggle">
+                        <input type="checkbox" id="grid-toggle" checked>
+                        Grid
+                    </label>
+                </div>
+                <div class="toolbar-control">
+                    <label for="snap-toggle">
+                        <input type="checkbox" id="snap-toggle" checked>
+                        Snap
+                    </label>
+                </div>
+                <div class="toolbar-control">
+                    <label for="grid-size">Size:</label>
+                    <input type="number" id="grid-size" min="5" max="100" value="10" class="grid-size-input">
+                </div>
+            </div>
+            
+            <div class="toolbar-section">
+                <button class="tool-btn" id="zoom-in" title="Zoom In (+)">
+                    <span class="tool-icon">🔍+</span>
+                </button>
+                <button class="tool-btn" id="zoom-out" title="Zoom Out (-)">
+                    <span class="tool-icon">🔍-</span>
+                </button>
+                <button class="tool-btn" id="zoom-reset" title="Reset View (R)">
+                    <span class="tool-icon">⟲</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Left Panel - Layers -->
+            <aside class="left-panel">
+                <div class="panel-header">
+                    <h3>Layers</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="layer-list">
+                        <div class="layer-item">
+                            <input type="checkbox" id="layer-bg" checked>
+                            <label for="layer-bg">Background</label>
+                        </div>
+                        <div class="layer-item">
+                            <input type="checkbox" id="layer-windows" checked>
+                            <label for="layer-windows">Windows</label>
+                        </div>
+                        <div class="layer-item">
+                            <input type="checkbox" id="layer-doors" checked>
+                            <label for="layer-doors">Doors</label>
+                        </div>
+                        <div class="layer-item">
+                            <input type="checkbox" id="layer-glass" checked>
+                            <label for="layer-glass">Glass</label>
+                        </div>
+                        <div class="layer-item">
+                            <input type="checkbox" id="layer-annotations" checked>
+                            <label for="layer-annotations">Annotations</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center - Canvas Area -->
+            <main class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </main>
+
+            <!-- Right Panel - Properties -->
+            <aside class="right-panel">
+                <div class="panel-header">
+                    <h3>Properties</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="property-group">
+                        <h4>Selection</h4>
+                        <p class="property-info">No object selected</p>
+                    </div>
+                    
+                    <div class="property-group">
+                        <h4>Position</h4>
+                        <div class="property-row">
+                            <label>X:</label>
+                            <input type="number" class="property-input" value="0" disabled>
+                        </div>
+                        <div class="property-row">
+                            <label>Y:</label>
+                            <input type="number" class="property-input" value="0" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <h4>Size</h4>
+                        <div class="property-row">
+                            <label>Width:</label>
+                            <input type="number" class="property-input" value="0" disabled>
+                        </div>
+                        <div class="property-row">
+                            <label>Height:</label>
+                            <input type="number" class="property-input" value="0" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <h4>Transform</h4>
+                        <div class="property-row">
+                            <label>Rotation:</label>
+                            <input type="number" class="property-input" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-section">
+                <span class="status-label">Zoom:</span>
+                <span id="zoom-level" class="status-value">100%</span>
+            </div>
+            <div class="status-section">
+                <span class="status-label">Cursor:</span>
+                <span id="cursor-position" class="status-value">X: 0, Y: 0</span>
+            </div>
+            <div class="status-section">
+                <span class="status-label">Selected:</span>
+                <span id="selected-count" class="status-value">0 objects</span>
+            </div>
+            <div class="status-section">
+                <span class="status-info">Press G to toggle grid | Shift+Drag to pan | Scroll to zoom</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+/**
+ * toolbar.css - Toolbar styling for CAD Drawing Engine
+ * Tool buttons, controls, and toolbar layout
+ */
+
+/* Toolbar Container */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #ecf0f1;
+    padding: 12px 16px;
+    border-bottom: 2px solid #bdc3c7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+}
+
+.toolbar-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border-right: 1px solid #bdc3c7;
+}
+
+.toolbar-section:last-child {
+    border-right: none;
+}
+
+/* Tool Buttons */
+.tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background-color: white;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    font-size: 12px;
+}
+
+.tool-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #95a5a6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tool-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.tool-btn.active {
+    background-color: #3498db;
+    border-color: #2980b9;
+    color: white;
+}
+
+.tool-btn.active:hover {
+    background-color: #2980b9;
+}
+
+.tool-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Tool Icon */
+.tool-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.tool-btn.active .tool-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Tool Label */
+.tool-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Toolbar Controls */
+.toolbar-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.toolbar-control label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #555;
+}
+
+.toolbar-control input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.toolbar-control input[type="number"] {
+    width: 60px;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Grid Size Input */
+.grid-size-input {
+    width: 50px;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.grid-size-input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Toolbar Separator */
+.toolbar-separator {
+    width: 1px;
+    height: 30px;
+    background-color: #bdc3c7;
+    margin: 0 8px;
+}
+
+/* Toolbar Dropdown */
+.toolbar-dropdown {
+    position: relative;
+}
+
+.toolbar-dropdown select {
+    padding: 6px 24px 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 13px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.toolbar-dropdown select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Toolbar Button Group */
+.toolbar-btn-group {
+    display: flex;
+    gap: 0;
+}
+
+.toolbar-btn-group .tool-btn {
+    border-radius: 0;
+    border-right-width: 1px;
+}
+
+.toolbar-btn-group .tool-btn:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.toolbar-btn-group .tool-btn:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-right-width: 2px;
+}
+
+/* Toolbar Badge */
+.tool-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* Responsive Toolbar */
+@media (max-width: 768px) {
+    .toolbar {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+    
+    .toolbar-section {
+        padding: 0 8px;
+    }
+    
+    .tool-btn {
+        min-width: 50px;
+        padding: 6px 8px;
+    }
+    
+    .tool-icon {
+        font-size: 18px;
+    }
+    
+    .tool-label {
+        font-size: 10px;
+    }
+}
+
+/* Compact Mode */
+.toolbar.compact .tool-btn {
+    flex-direction: row;
+    gap: 6px;
+    min-width: auto;
+}
+
+.toolbar.compact .tool-label {
+    display: none;
+}
+
+/* Toolbar Tooltip */
+.tool-btn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2c3e50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Keyboard Shortcut Display */
+.tool-shortcut {
+    font-size: 10px;
+    color: #95a5a6;
+    margin-top: 2px;
+}
+
+.tool-btn.active .tool-shortcut {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Made with Bob */

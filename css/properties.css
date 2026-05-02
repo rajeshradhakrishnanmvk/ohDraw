@@ -1,0 +1,374 @@
+/**
+ * properties.css - Property panel styling for CAD Drawing Engine
+ * Property groups, inputs, and form controls
+ */
+
+/* Property Groups */
+.property-group {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.property-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.property-group h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Property Info */
+.property-info {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Property Rows */
+.property-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 12px;
+}
+
+.property-row:last-child {
+    margin-bottom: 0;
+}
+
+.property-row label {
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+/* Property Inputs */
+.property-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: border-color 0.2s;
+}
+
+.property-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.property-input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Property Select */
+.property-select {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.property-select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.property-select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Property Checkbox */
+.property-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.property-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.property-checkbox label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Property Color Picker */
+.property-color {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.property-color input[type="color"] {
+    width: 40px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.property-color-value {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+}
+
+/* Property Range Slider */
+.property-range {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.property-range input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+    cursor: pointer;
+}
+
+.property-range input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3498db;
+    cursor: pointer;
+}
+
+.property-range input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3498db;
+    cursor: pointer;
+    border: none;
+}
+
+.property-range-value {
+    text-align: right;
+    font-size: 12px;
+    color: #7f8c8d;
+    font-family: 'Courier New', monospace;
+}
+
+/* Property Button */
+.property-btn {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.property-btn:hover {
+    background-color: #2980b9;
+}
+
+.property-btn:active {
+    background-color: #21618c;
+}
+
+.property-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.property-btn.secondary {
+    background-color: #95a5a6;
+}
+
+.property-btn.secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.property-btn.danger {
+    background-color: #e74c3c;
+}
+
+.property-btn.danger:hover {
+    background-color: #c0392b;
+}
+
+/* Property Grid (for multiple inputs) */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.property-grid-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.property-grid-item label {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+.property-grid-item input {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* Property Divider */
+.property-divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 16px 0;
+}
+
+/* Property Badge */
+.property-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #3498db;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.property-badge.success {
+    background-color: #27ae60;
+}
+
+.property-badge.warning {
+    background-color: #f39c12;
+}
+
+.property-badge.danger {
+    background-color: #e74c3c;
+}
+
+/* Property Help Text */
+.property-help {
+    font-size: 11px;
+    color: #95a5a6;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Property Section Toggle */
+.property-section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 0;
+}
+
+.property-section-toggle h4 {
+    margin: 0;
+}
+
+.property-section-toggle::after {
+    content: '▼';
+    font-size: 10px;
+    color: #7f8c8d;
+    transition: transform 0.2s;
+}
+
+.property-section-toggle.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.property-section-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.property-section-content.collapsed {
+    max-height: 0;
+}
+
+/* Property Units */
+.property-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.property-with-unit input {
+    flex: 1;
+}
+
+.property-unit {
+    font-size: 12px;
+    color: #7f8c8d;
+    min-width: 30px;
+}
+
+/* Responsive Properties Panel */
+@media (max-width: 768px) {
+    .property-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .property-row label {
+        min-width: auto;
+    }
+    
+    .property-input,
+    .property-select {
+        width: 100%;
+    }
+    
+    .property-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Made with Bob */
